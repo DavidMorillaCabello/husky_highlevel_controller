@@ -2,6 +2,8 @@
 
 ## Overview
 
+!!!IMPORTANT NOTICE: If having this repo as public could be incorrect or detrimental in any way, please notify me asap!!!
+
 This is a package created for the course Programming for Robotics - ROS
 which contents are open at the RSL [webpage](https://rsl.ethz.ch/education-students/lectures/ros.html).
 

@@ -11,6 +11,8 @@ find_package(catkin REQUIRED
   COMPONENTS
     roscpp
     sensor_msgs
+    geometry_msgs
+    tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -110,6 +112,8 @@ catkin_package(
   CATKIN_DEPENDS 
     roscpp 
     sensor_msgs
+    geometry_msgs
+    tf
 #  DEPENDS system_lib
 )
 

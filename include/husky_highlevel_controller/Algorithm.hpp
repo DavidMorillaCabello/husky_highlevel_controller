@@ -1,18 +1,19 @@
-#pragma once 
+#pragma once
 
 #include <vector>
 #include <algorithm>
+#include <math.h>
 
 namespace husky_highlevel_controller
 {
-
-    /*!
+/*!
      * Class containing the algorithmic part of the package.
      */
-    class Algorithm
-    {
+class Algorithm
+{
 
-    public:
+public:
+
     /*!
      * Constructor.
      */
@@ -22,7 +23,7 @@ namespace husky_highlevel_controller
      * Destructor;
      */
     virtual ~Algorithm();
-
+    
     /*!
      * Add new range data.
      * @param range the new data.
@@ -35,14 +36,29 @@ namespace husky_highlevel_controller
      */
     double getMinimum(const std::vector<float> &ranges);
 
-    private:
-        
-        //! Internal variable to hold the current minimum...NOT USED
-        //double minimum_;
+    /*!
+     * Get the index of the minimum of the ranges.
+     * @return the index of the minimum of the ranges.
+     */
+    int getMinimumIndex(const std::vector<float> &ranges);
 
-        //! Number of ranges taken. NOT USED
-        //size_t nRanges_;
+    /*!
+     * Get the computed minimum of the ranges.
+     * @param rho the distance to the point.
+     * @param alpha the angle from the point.
+     * @param x the returned x coordinate of the point.
+     * @param y the returned y coordinate of the point.
+     */
+    void p2c(float rho, float alpha, float &x, float &y);
 
-    };
+private:
+
+    //! Internal variable to hold the current minimum...NOT USED
+    //double minimum_;
+
+    //! Number of ranges taken. NOT USED
+    //size_t nRanges_;
     
+};
+
 } // namespace husky_highlevel_controller

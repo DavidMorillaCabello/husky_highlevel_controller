@@ -1,0 +1,4 @@
+vel_control:
+    publisher_name: "/cmd_vel"
+    P_linear: 3
+    P_angular: 0.1

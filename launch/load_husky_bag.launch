@@ -1,0 +1,24 @@
+<launch>
+
+    <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED true)"/>
+    <arg name="kinect_enabled" default="$(optenv HUSKY_UR5_ENABLED false)"/>
+    <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+
+    <param name="/use_sim_time" value="true"/>
+
+    <include file="$(find husky_description)/launch/description.launch">
+        <arg name="laser_enabled" default="$(arg laser_enabled)"/>
+        <arg name="kinect_enabled" default="$(arg kinect_enabled)"/>
+        <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+    </include>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+        <rosparam command="load" file="$(find husky_control)/config/localization.yaml" />
+    </node>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <node name="rviz" type="rviz" pkg="rviz" />
+
+    <node pkg="rosbag" type="play" name="player" output="screen" args="--clock $(find husky_highlevel_controller)/datasets/husky_navigation.bag"/>
+</launch>

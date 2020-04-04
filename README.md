@@ -86,12 +86,12 @@ It finally implements a service to stop the robot in case of emergency.
 
 #### Subscribed Topics
 
-* **'/scan'** ([sensor_msgs/LaserScan])
+* **`/scan`** ([sensor_msgs/LaserScan])
     The scan measures from which the minimum is computed.
 
 #### Published Topics
 
-* **'/cmd_vel'** ([geometry_msgs/Twist])
+* **`/cmd_vel`** ([geometry_msgs/Twist])
     The velocity command for the robot.
 
 * **'/visualization_marker'** ([visualization_msgs/Marker])
@@ -99,7 +99,7 @@ It finally implements a service to stop the robot in case of emergency.
 
 #### Services
 
-* **'emergency_stop'** ([std_srvs/SetBool])
+* **`emergency_stop`** ([std_srvs/SetBool])
     Set a stopped state for the robot when the request data is true and allows movement again whhen request data is false.
     It can be triggered from the consol with:
         rosservice call /emergency_stop "data: true"
@@ -107,22 +107,22 @@ It finally implements a service to stop the robot in case of emergency.
 
 #### Parameters
 
-* **'subscriber_topic'** (string, default: "/scan")
+* **`subscriber_topic`** (string, default: "/scan")
     The name of the laser scan topic.
 
-* **'queue_size'** (int, default: 10)
+* **`queue_size`** (int, default: 10)
     The size of the queue for the subscriber and publisher.
 
-* **'p_linear'** (float, default: 1)
+* **`p_linear`** (float, default: 1)
     The proporcional value for the linear velocity control.
 
-* **'p_angular'** (float, default: 0.1)
+* **`p_angular`** (float, default: 0.1)
     The proporcional value for the angular velocity control.
 
-* **'subscriber_topic'** (string, default: "/cmd_vel")
+* **`subscriber_topic`** (string, default: "/cmd_vel")
     The name of the velocity command topic.
 
-* **'service_name'** (string, default: "/emergency_stop")
+* **`service_name`** (string, default: "/emergency_stop")
     The name of the emergency stop service.
 
 ### husky_emergency_stop
@@ -133,27 +133,27 @@ If the robot is stopped and the distance is high again, it starts the movement a
 
 #### Subscribed Topics
 
-* **'/scan'** ([sensor_msgs/LaserScan])
+* **`/scan`** ([sensor_msgs/LaserScan])
     The scan measures from which the minimum is computed.
 
 #### Services
 
-* **'emergency_stop'** ([std_srvs/SetBool])
+* **`emergency_stop`** ([std_srvs/SetBool])
     Sends a stop request if the robot is too close to the column.
     Sends a resume request if the robot is far from the column again.
 
 #### Parameters
 
-* **'subscriber_topic'** (string, default: "/scan")
+* **`subscriber_topic`** (string, default: "/scan")
     The name of the laser scan topic.
 
-* **'queue_size'** (int, default: 10)
+* **`queue_size`** (int, default: 10)
     The size of the queue for the subscriber and publisher.
 
-* **'service_name'** (string, default: "/emergency_stop")
+* **`service_name`** (string, default: "/emergency_stop")
     The name of the emergency stop service.
 
-* **'emergency_distance'** (float, default: 1)
+* **`emergency_distance`** (float, default: 1)
     The limit distance to trigger the emergency_stop service 
     in case that the minimum laser scan detection is below it.
 
@@ -166,27 +166,27 @@ the emergency_stop service is called to stop the robot.
 
 #### Subscribed Topics
 
-* **'/imu/data'** ([sensor_msgs/Imu])
+* **`/imu/data`** ([sensor_msgs/Imu])
     The imu measures from which the x acceleration is extracted.
 
 #### Services
 
-* **'emergency_stop'** ([std_srvs/SetBool])
+* **`emergency_stop`** ([std_srvs/SetBool])
     Sends a stop request if the robot is has collided with anything 
     (x acceleration value bigger than a configurable measure in its negative direction).
 
 #### Parameters
 
-* **'subscriber_topic'** (string, default: "/scan")
+* **`subscriber_topic`** (string, default: "/scan")
     The name of the laser scan topic.
 
-* **'queue_size'** (int, default: 10)
+* **`queue_size`** (int, default: 10)
     The size of the queue for the subscriber and publisher.
 
-* **'service_name'** (string, default: "/emergency_stop")
+* **`service_name`** (string, default: "/emergency_stop")
     The name of the emergency stop service.
 
-* **'collision_threshold'** (float, default: -1)
+* **`collision_threshold`** (float, default: -1)
     The maximum value of the x acceleration to trigger the emergency_stop service.
     Notice that it's a negative value to detect frontal collisions.
 

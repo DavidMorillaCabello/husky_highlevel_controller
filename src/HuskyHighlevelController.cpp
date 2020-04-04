@@ -11,12 +11,14 @@ HuskyHighlevelController::HuskyHighlevelController(ros::NodeHandle &nodeHandle)
         ros::requestShutdown();
     }
     subscriberScan_ = nodeHandle_.subscribe(subscriberTopic_, queueSize_,
-                                            &HuskyHighlevelController::topicsCallback_, this);
-
-    //serviceServer_ = nodeHandle.advertiseService(...) NOT USED
+                                            &HuskyHighlevelController::laserScanCallback_, this);
 
     publisherVel_ = nodeHandle_.advertise<geometry_msgs::Twist>(publisherTopic_, queueSize_);
     pillarVisPub_ = nodeHandle_.advertise<visualization_msgs::Marker>("visualization_marker", 0);
+
+    emergencyStop_ = false;
+
+    serviceServer_ = nodeHandle_.advertiseService(serviceName_, &HuskyHighlevelController::serverCallback_, this);
 
     ROS_INFO("Successfully launched node.");
 }
@@ -37,10 +39,12 @@ bool HuskyHighlevelController::readParameters_()
         return false;
     if (!nodeHandle_.getParam("vel_control/publisher_name", publisherTopic_))
         return false;
+    if (!nodeHandle_.getParam("vel_control/emergency_stop_service_name", serviceName_))
+        return false;
     return true;
 }
 
-void HuskyHighlevelController::topicsCallback_(const sensor_msgs::LaserScan &msg)
+void HuskyHighlevelController::laserScanCallback_(const sensor_msgs::LaserScan &msg)
 {
 
     int index = algorithm_.getMinimumIndex(msg.ranges);
@@ -51,9 +55,18 @@ void HuskyHighlevelController::topicsCallback_(const sensor_msgs::LaserScan &msg
 
     geometry_msgs::Twist cmd_vel;
 
-    cmd_vel.linear.x = xPillar_ * PLinear_;
+    if (!emergencyStop_)
+    {
+        cmd_vel.linear.x = xPillar_ * PLinear_;
 
-    cmd_vel.angular.z = -yPillar_ * PAngular_;
+        cmd_vel.angular.z = -yPillar_ * PAngular_;
+    } else
+    {
+        cmd_vel.linear.x = 0;
+
+        cmd_vel.angular.z = 0;
+    }
+    
 
     transformMarker_(xPillar_, yPillar_, pillarOdomTf_);
 
@@ -68,18 +81,18 @@ void HuskyHighlevelController::transformMarker_(const float xSensor, const float
 
     sensorTransform.getOrigin().setX(xSensor);
     sensorTransform.getOrigin().setY(ySensor);
-    
+
     try
     {
         tfListener_.lookupTransform("/odom", "/base_laser", ros::Time(0), transform);
-        ROS_INFO("transform X: %f\ntransform Y: %f\nsensor X: %f\nsensor Y: %f\n",transform.getOrigin().x(),transform.getOrigin().y(),xSensor,ySensor);
+        ROS_INFO("transform X: %f\ntransform Y: %f\nsensor X: %f\nsensor Y: %f\n", transform.getOrigin().x(), transform.getOrigin().y(), xSensor, ySensor);
     }
-    catch (tf::TransformException ex) {
-        ROS_ERROR("%s",ex.what());
+    catch (tf::TransformException ex)
+    {
+        ROS_ERROR("%s", ex.what());
     }
-    
-    markerTf = transform * sensorTransform;
 
+    markerTf = transform * sensorTransform;
 }
 
 void HuskyHighlevelController::publishMarker_(const tf::Transform &markerTF)
@@ -107,6 +120,18 @@ void HuskyHighlevelController::publishMarker_(const tf::Transform &markerTF)
     marker.color.b = 0.0;
 
     pillarVisPub_.publish(marker);
+}
+
+bool HuskyHighlevelController::serverCallback_(std_srvs::SetBoolRequest &request, std_srvs::SetBoolResponse &response)
+{
+    emergencyStop_ = request.data;
+
+    ROS_INFO("Emergency stopped triggered: stopping the robot inmediately!");
+
+    response.message = "Emergency stop listened";
+    response.success = true;
+    
+    return true;
 }
 
 } // namespace husky_highlevel_controller

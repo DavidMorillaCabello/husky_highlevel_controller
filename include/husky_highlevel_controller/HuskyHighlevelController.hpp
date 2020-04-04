@@ -8,6 +8,7 @@
 #include <geometry_msgs/Twist.h>
 #include <visualization_msgs/Marker.h>
 #include <tf/transform_listener.h>
+#include <std_srvs/SetBool.h>
 
 // STD
 #include <string>
@@ -15,7 +16,7 @@
 namespace husky_highlevel_controller
 {
 
-/*!
+     /*!
      *  Main class for the node to handle the ROS interfacing.
      */
 class HuskyHighlevelController
@@ -43,7 +44,7 @@ private:
      * ROS topic callback method.
      * @param message the received message.
      */
-     void topicsCallback_(const sensor_msgs::LaserScan &msg);
+     void laserScanCallback_(const sensor_msgs::LaserScan &msg);
 
      /*!
      * ROS method to transform the markers position.
@@ -65,7 +66,7 @@ private:
      * @param response the provided response.
      * @return true if succesful, false otherwise.
      */
-     //bool serviceCallback(...) NOT USED
+     bool serverCallback_(std_srvs::SetBoolRequest &request, std_srvs::SetBoolResponse &response);
 
      //! ROS node handle.
      ros::NodeHandle &nodeHandle_;
@@ -78,8 +79,12 @@ private:
 
      //! ROS subscriber queue size.
      int queueSize_;
+
      //! ROS service server.
-     //ros::ServiceServer serviceServer_; NOT USED
+     ros::ServiceServer serviceServer_;
+
+     //! ROS service name to create the server for.
+     std::string serviceName_;
 
      //! ROS publisher to the cmd_vel topic
      ros::Publisher publisherVel_;
@@ -104,5 +109,8 @@ private:
 
      //! Pillar position with respect the odom tf
      tf::Transform pillarOdomTf_;
+
+     //! Variable to trigger the emergency stop
+     bool emergencyStop_;
 };
 } // namespace husky_highlevel_controller

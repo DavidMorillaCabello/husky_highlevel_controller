@@ -9,6 +9,7 @@ project(husky_highlevel_controller)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED 
   COMPONENTS
+    std_srvs
     roscpp
     sensor_msgs
     geometry_msgs
@@ -110,7 +111,8 @@ catkin_package(
   LIBRARIES 
     ${PROJECT_NAME}_core
   CATKIN_DEPENDS 
-    roscpp 
+    roscpp
+    std_srvs
     sensor_msgs
     geometry_msgs
     tf
@@ -158,7 +160,7 @@ add_executable(${PROJECT_NAME}
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_core
-   ${catkin_LIBRARIES}
+  ${catkin_LIBRARIES}
 )
 
 target_link_libraries(${PROJECT_NAME}

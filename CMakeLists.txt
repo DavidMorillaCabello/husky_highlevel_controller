@@ -153,6 +153,11 @@ add_executable(husky_emergency_stop
   src/HuskyEmergencyStop.cpp
 )
 
+add_executable(husky_collision_stop
+  src/husky_collision_stop_node.cpp
+  src/HuskyCollisionStop.cpp
+)
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -174,6 +179,11 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 target_link_libraries(husky_emergency_stop
+  ${PROJECT_NAME}_core
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(husky_collision_stop
   ${PROJECT_NAME}_core
   ${catkin_LIBRARIES}
 )

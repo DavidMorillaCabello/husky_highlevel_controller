@@ -1,0 +1,3 @@
+imu:
+    subscriber_topic: "/imu/data"
+    queue_size: 10

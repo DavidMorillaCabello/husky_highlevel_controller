@@ -10,9 +10,9 @@
         <rosparam command="load" file="$(find husky_highlevel_controller)/config/robot/control.yaml"/>
     </node>
 
-    <node name="husky_emergency_stop" type="husky_emergency_stop" pkg="husky_highlevel_controller" output="screen">
+    <node name="husky_collision_stop" type="husky_collision_stop" pkg="husky_highlevel_controller" output="screen">
         <rosparam command="load" file="$(find husky_highlevel_controller)/config/sensors/imu.yaml"/>
-        <rosparam command="load" file="$(find husky_highlevel_controller)/config/robot/emergency_stop.yaml"/>
+        <rosparam command="load" file="$(find husky_highlevel_controller)/config/robot/collision_stop.yaml"/>
     </node>
     
     <!--node name="rviz" type="rviz" pkg="rviz" />-->

@@ -54,7 +54,7 @@ void HuskyEmergencyStop::laserScanCallback_(const sensor_msgs::LaserScan &msg)
         {
             ROS_INFO("Recieved response: %s",service.response.message.c_str());
         } else {
-            ROS_ERROR("Failed to call service add_two_ints");
+            ROS_ERROR("Failed to call service emergency_stop");
         }
     }
     else if (emergencyStop_ && minimum > emergencyDistance_)
@@ -68,7 +68,7 @@ void HuskyEmergencyStop::laserScanCallback_(const sensor_msgs::LaserScan &msg)
         {
             ROS_INFO("Recieved response: %s",service.response.message.c_str());
         } else {
-            ROS_ERROR("Failed to call service add_two_ints");
+            ROS_ERROR("Failed to call service emergency_stop");
         }
     }
 }

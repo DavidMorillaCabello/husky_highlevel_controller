@@ -1,0 +1,3 @@
+emergency_stop:
+    emergency_stop_service_name: "/emergency_stop"
+    emergency_distance: 1

@@ -7,7 +7,7 @@ HuskyHighlevelController::HuskyHighlevelController(ros::NodeHandle &nodeHandle)
 {
     if (!readParameters_())
     {
-        ROS_ERROR("Could not read parameters.");
+        ROS_ERROR("Could not read parameters husky highlevel controller.");
         ros::requestShutdown();
     }
     subscriberScan_ = nodeHandle_.subscribe(subscriberTopic_, queueSize_,
@@ -85,7 +85,7 @@ void HuskyHighlevelController::transformMarker_(const float xSensor, const float
     try
     {
         tfListener_.lookupTransform("/odom", "/base_laser", ros::Time(0), transform);
-        ROS_INFO("transform X: %f\ntransform Y: %f\nsensor X: %f\nsensor Y: %f\n", transform.getOrigin().x(), transform.getOrigin().y(), xSensor, ySensor);
+        //ROS_INFO("transform X: %f\ntransform Y: %f\nsensor X: %f\nsensor Y: %f\n", transform.getOrigin().x(), transform.getOrigin().y(), xSensor, ySensor);
     }
     catch (tf::TransformException ex)
     {
@@ -126,11 +126,17 @@ bool HuskyHighlevelController::serverCallback_(std_srvs::SetBoolRequest &request
 {
     emergencyStop_ = request.data;
 
-    ROS_INFO("Emergency stopped triggered: stopping the robot inmediately!");
+    if(emergencyStop_)
+    {
+        ROS_INFO("Emergency stopped triggered: stopping the robot inmediately!");
+        response.message = "Emergency stop listened";
+    } else 
+    {
+        ROS_INFO("Resume triggered: starting the robot again");
+        response.message = "Resume listened";
+    }
 
-    response.message = "Emergency stop listened";
     response.success = true;
-    
     return true;
 }
 

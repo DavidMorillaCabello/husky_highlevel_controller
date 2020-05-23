@@ -1,3 +1,3 @@
 emergency_stop:
     emergency_stop_service_name: "/emergency_stop"
-    collision_threshold: -1
+    collision_threshold: -0.1
